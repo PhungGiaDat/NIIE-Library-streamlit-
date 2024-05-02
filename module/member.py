@@ -5,12 +5,6 @@ class member():
         self.gender = gender
         self.email = email
         self.phone_number = phone  
-    def input(self):
-        self.member_id = input()
-        self.member_name = input()
-        self.gender = input()
-        self.email = input()
-        self.phone = input()
     def check_phonenumber(self):
         if len(self.phone_number) != 10:
             return False
