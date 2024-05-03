@@ -4,7 +4,7 @@ class member():
         self.member_name = member_name
         self.gender = gender
         self.email = email
-        self.phone_number = phone  
+        self.phone_number = phone
     def check_phonenumber(self):
         if len(self.phone_number) != 10:
             return False
