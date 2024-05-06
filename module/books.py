@@ -1,5 +1,6 @@
 import datetime
 class BOOKS:
+    ## This is the parent class for TYPE_BOOKS AND TICKET_DETAILS
     def __init__(self,book_id,book_name,author,quantity,year_of_product,available_quantity:bool) :
         self.book_id = book_id
         self.book_name = book_name
@@ -7,7 +8,7 @@ class BOOKS:
         self.year_of_product = year_of_product
         self.author = author
         self.available = available_quantity
-    def check_year(self):
+    def check_year(self): ## This function checks if the year of production is less than the current year
         if self.year_of_product < datetime.datetime.now().year:
             return True
         else:

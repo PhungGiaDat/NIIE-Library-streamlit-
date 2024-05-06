@@ -1,4 +1,4 @@
-class member():
+class MEMBER():
     def __init__(self,member_id : int,member_name : str , gender : str, email : str, phone : str) :
         self.member_id = member_id 
         self.member_name = member_name
