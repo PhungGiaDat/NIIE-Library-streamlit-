@@ -1,6 +1,6 @@
 import streamlit as st 
 from streamlit_option_menu import option_menu as st_option_menu
-from Tabs import Homepage, Account, Loan_books
+from Tabs import Homepage, Account, Loan_books , Books
 
 
 st.set_page_config(
@@ -33,8 +33,8 @@ class MultiApp:
                 menu_title="Select App",
                 options=["Homepage", "Account", "Books", "Podcast", "AudioBooks", "LoanBooks", "Community", "About"],
                 menu_icon='chat-text-fill',
-                icons=['house-fill', 'person-circle', 'trophy-fill', 'chat-fill',
-                       'info-circle-fill', 'info-circle-fill', 'info-circle-fill'],
+                icons=['house-fill', 'person-circle', 'book', 'mic',
+                       'headphones', 'basket', 'globe', 'info-circle-fill'],
                 default_index=1,
                 styles={
                     "container": {"padding": "5!important", "background-color": 'white'},
@@ -50,5 +50,7 @@ class MultiApp:
             Account.app()
         if app == "LoanBooks":
             Loan_books.app()
+        if app == "Books":
+            Books.app()
     run()
         
