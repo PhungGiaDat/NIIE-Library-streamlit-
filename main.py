@@ -1,6 +1,6 @@
 import streamlit as st 
 from streamlit_option_menu import option_menu as st_option_menu
-from Tabs import Homepage
+from Tabs import Homepage, Account, Loan_books
 
 
 st.set_page_config(
@@ -8,9 +8,8 @@ st.set_page_config(
     page_icon=":book:"
 )
 
-# cSpell:ignore streamlit NIIE Phương thức khởi thêm ứng dụng tilte chạy bên backicon
 
-class Multi_App:
+class MultiApp:
     # Class for adding multiple apps
     # Phương thức khởi tạo
     def __init__(self):
@@ -26,31 +25,30 @@ class Multi_App:
             "function": func
         })
         
-    # Function chạy ứng dụng bên sidebar    
+    # Function chạy ứng dụng bên sidebar
+    @staticmethod
     def run():
         with st.sidebar:
             app = st_option_menu(
                 menu_title="Select App",
-                options = ["Homepage", "Account ","Books" ,"Podcast","AudioBooks","Community","About"],
-                menu_icon ='chat-text-fill',
-                icons=['house-fill','person-circle','trophy-fill','chat-fill','info-circle-fill','info-circle-fill','info-circle-fill'],
-                default_index = 1,
+                options=["Homepage", "Account", "Books", "Podcast", "AudioBooks", "LoanBooks", "Community", "About"],
+                menu_icon='chat-text-fill',
+                icons=['house-fill', 'person-circle', 'trophy-fill', 'chat-fill',
+                       'info-circle-fill', 'info-circle-fill', 'info-circle-fill'],
+                default_index=1,
                 styles={
-                    "container": {"padding": "5!important","background-color":'white'},
+                    "container": {"padding": "5!important", "background-color": 'white'},
                     "icon": {"color": "black", "font-size": "23px"}, 
-                    "nav-link": {"color":"black","font-size": "20px", "text-align": "left", "margin":"0px", "--hover-color": "navy-blue"},
+                    "nav-link": {"color": "black", "font-size": "20px", "text-align": "left", "margin": "0px",
+                                 "--hover-color": "navy-blue"},
                     "nav-link-selected": {"background-color": "white"},
                 }
             )
         if app == "Homepage":
-            Homepage.app()
-        # # if app == "Books":
-        # #     Books.app()    
-        # # if app == "Podcast":
-        # #     Podcast.app()        
-        # # if app == "AudioBooks":
-        # #     AudioBooks.app()
-        # # if app == 'LoanBooks':
-        # #     LoanBooks.app() 
+            Homepage.app()    
+        if app == "Account":
+            Account.app()
+        if app == "LoanBooks":
+            Loan_books.app()
     run()
         
