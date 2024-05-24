@@ -1,16 +1,52 @@
 import streamlit as st
+import requests
+import json
+import time
+
+
+def get_books_api():
+    api_endpoint = "https://www.googleapis.com/books/v1/volumes?q=your_search_term"
+    response = requests.get(api_endpoint)
+    if response.status_code == 200: ## success status
+        data = response.json()
+        if isinstance(data, dict) and "items" in data:
+            return data["items"]
+        else:
+            return []
+    else:
+        return []
+
+def display_books(books):
+    for book in books:
+        volume_info = book.get("volumeInfo", {})
+        title = volume_info.get("title", "Unknown Title")
+        image_links = volume_info.get("imageLinks", {})
+        thumbnail = image_links.get("thumbnail", "")
+        info_link = volume_info.get("infoLink", "#")
+
+        # Display book information
+        col1, col2 = st.columns([1, 4])
+        with col1:
+            if thumbnail:
+                st.image(thumbnail, caption=title)
+            else:
+                st.write("Không có hình ảnh")
+        with col2:
+            st.write(f"**Liên kết:** [{title}]({info_link})")
 
 def app():
-    # Hiển thị tiêu đề của trang
+    # Display page title
     st.title("Books")
 
-    # Hiển thị thông tin về cuốn sách
-    st.header("Cuốn sách: Kiến Thức Nghề Lập Trình ")
-    st.write("Mô tả: ")
-    st.write("– Cung cấp A-Z kiến thức và nghề lập trình, đầy đủ, chi tiết. Từ đó giúp người mới bắt đầu biết mình sẽ phải học gì, làm gì tiếp theo, ko bị hoang mang trong 1 núi thông tin khổng lồ trên mạng")
-    st.write("– Giúp người mới bắt đầu đi đúng hướng, học đúng chỗ, tránh mất thời gian")
-    st.write("– Giúp định hướng rõ ràng trong nghề lập trình: Học xong sẽ theo lĩnh vực nào trong nghề lập trình, làm việc ở đâu, mức lương bao nhiêu, cần phải chuẩn bị những gì")
-    st.write("– Ngoài ra được trang trị những kiến thức mới nhất về các công nghệ đang là xu hướng như mới nhất, cách ứng dụng khác vào công việc lập trình")
-    st.write("– Được lắng nghe chia sẻ thực từ người trong nghề đi làm trên 6 năm kinh nghiệm")
+    while True:
+        # Call the API and display images of books
+        books = get_books_api()
+        display_books(books)
+
+        # Sleep for a specified refresh interval
+        time.sleep(10)
+        st.rerun()
+          # Adjust this value as needed
+
 if __name__ == "__main__":
     app()
