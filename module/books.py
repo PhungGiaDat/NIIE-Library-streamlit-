@@ -5,6 +5,7 @@ import time
 from database.Query import insert, select, update, remove
 class BOOKS:
     # This is the parent class for TYPE_BOOKS AND TICKET_DETAILS
+    books_id = ""
     book_name = ""
     year_of_product = 0
     author = ""
@@ -35,6 +36,7 @@ class BOOKS:
     def add_book_tab(self):
         st.caption("Add Book")
         with st.form(key="Add Member"):
+            st.header("Add Book")
             self.book_name = st.text_input("Book Name", placeholder="Name")
             self.year_of_product = st.number_input("Year of Product", value=2021, min_value=1900, max_value=2024, step=1, key=None)
             self.author = st.text_input("Author", placeholder="Author")
@@ -69,16 +71,19 @@ class BOOKS:
     def update_book_tab(self):
         st.write("Update Member")
         with st.form(key="Update Member"):
-            student_id = st.text_input("Student ID", placeholder="Put in student ID")
-            name = st.text_input("Name", placeholder="Name")
-            email = st.text_input("Email", placeholder="Email")
-            phone = st.text_input("Phone", placeholder="Phone")
-            address = st.text_input("Address", placeholder="Address")
+            self.books_id = st.text_input("Books ID", placeholder="Put in books ID")
+            self.book_name = st.text_input("Book Title", placeholder="Name")
+            self.author = st.text_input("Author", placeholder="Author")
+            self.year_of_product = st.number_input("Year of Product", value=2021, min_value=1900, max_value=2024, step=1, key=None)
+            self.genre = st.text_input("Genre", placeholder="Genre")
+            self.type_format = st.text_input("Type Format", placeholder="Type Format")
+            self.type_language = st.text_input("Type Language", placeholder="Type Language")
+            self.edition = st.text_input("Edition", placeholder="Edition")
             submit = st.form_submit_button("Update Member")
             if submit:
                 try:
-                    query = "UPDATE LIBRARY_MEMBER SET NAME=%s, EMAIL=%s, PHONE=%s, ADDRESS=%s "
-                    data = (name, email, phone, address)
+                    query = "UPDATE BOOKS SET BOOKS_TITLE=%s, AUTHOR=%s, YEAR_OF_PRODUCT=%s, GENRE=%s, TYPE_FORMAT=%s, TYPE_LANGUAGE=%s, EDITION=%s WHERE BOOKS_Id=%s"
+                    data = (self.book_name, self.author, self.year_of_product, self.genre, self.type_format, self.type_language, self.edition, self.books_id)
                     update(query, data)
                 except pymysql.Error as err:
                     st.error(f"Error: {err}")
@@ -86,13 +91,14 @@ class BOOKS:
                     st.success("Update Member Success")
 
     def delete_book_tab(self):
-        st.write("Delete Member")
-        with st.form(key="Delete Member"):
-            student_id = st.text_input("Student ID", placeholder="Put in student ID")
+        st.write("Delete Books")
+        with st.form(key="Delete Books"):
+            self.books_id = st.text_input("Books ID", placeholder="Put in books ID")
+            self.book_name = st.text_input("Book Name", placeholder="Name")
             submit = st.form_submit_button("Delete Member")
             if submit:
-                query = "DELETE FROM LIBRARY_MEMBER WHERE STUDENT_ID=%s"
-                data = (student_id,)
+                query = "DELETE FROM LIBRARY_MEMBER WHERE BOOKS_Id=%s and BOOKS_TITLE=%s"
+                data = (self.books_id, self.book_name)
                 remove(query, data)
                 st.success("Delete Member Success")
 

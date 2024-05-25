@@ -57,6 +57,7 @@ class MultiApp:
         new_member = MEMBER()
         if new_member.register():
             st.session_state.form_submitted = True
+            
     @staticmethod
     def __sign_in(username,password):
         try:
