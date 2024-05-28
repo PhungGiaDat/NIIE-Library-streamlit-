@@ -2,6 +2,8 @@ import datetime
 import pymysql
 import streamlit as st
 import time
+import pandas as pd
+import matplotlib.pyplot as plt
 from database.Query import insert, select, update, remove
 class BOOKS:
     # This is the parent class for TYPE_BOOKS AND TICKET_DETAILS
@@ -50,6 +52,8 @@ class BOOKS:
             
             submit = st.form_submit_button("Add book")
             if submit and self.check_year():
+                with st.spinner("Adding Book"):
+                    time.sleep(2)
                 try:
                     query = ("INSERT INTO books (BOOKS_TITLE,AUTHOR,YEAR_OF_PRODUCT,GENRE,TYPE_FORMAT,TYPE_LANGUAGE,EDITION,QUANTITY) "
                              "VALUES (%s, %s, %s, %s, %s,%s, %s,%s)")
@@ -69,7 +73,7 @@ class BOOKS:
                         st.error(err)
 
     def update_book_tab(self):
-        st.write("Update Member")
+        st.write("Update Books")
         with st.form(key="Update Member"):
             self.books_id = st.text_input("Books ID", placeholder="Put in books ID")
             self.book_name = st.text_input("Book Title", placeholder="Name")
@@ -104,10 +108,38 @@ class BOOKS:
 
     def view_book_tab(self):
         st.write("View all of books in library stock")
-        query = "SELECT * FROM BOOKS"
+        query = "SELECT BOOKS.BOOKS_ID,BOOKS_TITLE,AUTHOR,YEAR_OF_PRODUCT,GENRE,TYPE_FORMAT,TYPE_LANGUAGE,EDITION,QUANTITY,BOOKS_DETAILS.STATUS FROM BOOKS JOIN BOOKS_DETAILS ON BOOKS.BOOKS_ID = BOOKS_DETAILS.BOOKS_ID"
         data = select(query)
-        st.table(data)
+        frame = pd.DataFrame(data, columns=["Books ID", "Book Title", "Author", "Year of Product", "Genre", "Type Format", "Type Language", "Edition", "Quantity", "Status"])
+        st.dataframe(frame)
+        
+        st.markdown("---")
+        st.write("Here is a summary of the number of books available in the library by title:")
+        # Fetch book data from the database
+        query = """
+        SELECT BOOKS.BOOKS_TITLE,BOOKS.QUANTITY
+        FROM BOOKS
+        """
+        # Fetch data using the select method from your database module
+        book_data = select(query)
+        df = pd.DataFrame(book_data, columns=['Book_Quantity', 'Book_Title'])
     
+    # Group by book title and sum the book quantity
+        book_quantity_count = df.groupby('Book_Title')['Book_Quantity'].sum().reset_index()
+
+        # Plotting the bar chart
+        plt.figure(figsize=(15, 8))
+        plt.bar(x='Book_Quantity', height='Book_Title', data=book_quantity_count, color='skyblue')
+        plt.xlabel('Number of Books')
+        plt.ylabel('Book Title')
+        plt.title('Number of Books by Title')
+        plt.tight_layout()
+
+        # Show the plot
+        st.pyplot(plt)
+        
+        
+        
 
         
         

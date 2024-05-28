@@ -1,8 +1,7 @@
 import streamlit as st 
 import pymysql
-import threading
 from streamlit_option_menu import option_menu
-from Tabs import Homepage ,Loan_books, Books,AdminCrud
+from Tabs import Homepage ,Loan_books, Books,AdminCrud,About
 from database.Query import select
 from module.member import MEMBER
 
@@ -136,6 +135,8 @@ class MultiApp:
             Loan_books.app()
         elif app == "Books":
             Books.app()
+        elif app == "About":
+            About.app()
 
 # Create an instance of the MultiApp class
 app = MultiApp()
