@@ -5,7 +5,7 @@ def connect():
     connection = pymysql.connect(
         host='localhost',
         user='root',
-        password="Pgd05092004@",
+        password="#######",
         database="library_management",
     )
     if connection:
